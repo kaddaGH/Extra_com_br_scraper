@@ -69,6 +69,7 @@ end
           'search_term' => page['vars']['search_term'],
           'page' => page['vars']['page'],
           'nbr_products_pg1' => nbr_products_pg1,
+          'scrape_url_nbr_products'=>scrape_url_nbr_products,
           'rank' => i+1
       }
 

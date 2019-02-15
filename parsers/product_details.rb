@@ -1,4 +1,5 @@
 data = JSON.parse(content)
+
 product = data['content']
 name= product['name']
 
@@ -6,7 +7,7 @@ brand = (product['name'].downcase.include?'red bull')? 'Red Bull':nil
 if brand.nil?
   brand =product['name'][/\s[A-Z\s]{4,}\s/]
 end
-category = data['categories'][0]['name']
+
 availability = product['stock'] == true ? '1' : ''
 pack = product['totalQuantity'].to_i == 0 ? '1' : product['totalQuantity'].to_i
 
@@ -37,7 +38,6 @@ item_size = $1
 uom = $2
 
 
-
 product_details = {
     # - - - - - - - - - - -
     RETAILER_ID: '100',
@@ -46,14 +46,14 @@ product_details = {
     # - - - - - - - - - - -
     SCRAPE_INPUT_TYPE: page['vars']['input_type'],
     SCRAPE_INPUT_SEARCH_TERM: page['vars']['search_term'],
-    SCRAPE_INPUT_CATEGORY: page['vars']['input_type'] == 'taxonomy' ? category : '-',
-    SCRAPE_URL_NBR_PRODUCTS: scrape_url_nbr_products,
+    SCRAPE_INPUT_CATEGORY: page['vars']['input_type'] == 'taxonomy' ? 'Energéticos e isotônicos' : '-',
+    SCRAPE_URL_NBR_PRODUCTS: page['vars']['scrape_url_nbr_products'],
     # - - - - - - - - - - -
-    SCRAPE_URL_NBR_PROD_PG1: nbr_products_pg1,
+    SCRAPE_URL_NBR_PROD_PG1:page['vars']['nbr_products_pg1'],
     # - - - - - - - - - - -
     PRODUCT_BRAND: brand,
-    PRODUCT_RANK: i + 1,
-    PRODUCT_PAGE: current_page + 1,
+    PRODUCT_RANK: page['vars']['rank'],
+    PRODUCT_PAGE: page['vars']['page'],
     PRODUCT_ID: product['id'],
     PRODUCT_NAME: product['name'],
     PRODUCT_DESCRIPTION: "",
