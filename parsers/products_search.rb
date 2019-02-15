@@ -49,7 +49,7 @@ else
 end
 
 
-products.each_with_index do |product, i|
+products.take(1).each_with_index do |product, i|
 
 if product.key?('id')
 
