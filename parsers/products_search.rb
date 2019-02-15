@@ -9,14 +9,17 @@ products = data['products']
 
 
 # if ot's first page , generate pagination
-if current_page == 0 and number_of_pages > 1 and 3>4
+if current_page == 0 and number_of_pages > 1
   nbr_products_pg1 = products.length
   step_page = 1
   while step_page < number_of_pages
+    url = page['url'].gsub(/p=0/, "p=#{step_page}")
+    url = url.gsub(/\&srt=00/, "\&srt=#{step_page}*page_size")
+
     pages << {
         page_type: 'products_search',
         method: 'GET',
-        url: page['url'].gsub(/page=0/, "page=#{step_page}"),
+        url: url,
         vars: {
             'input_type' => page['vars']['input_type'],
             'search_term' => page['vars']['search_term'],
@@ -36,9 +39,9 @@ else
 end
 
 
-products.take(1).each_with_index do |product, i|
+products.each_with_index do |product, i|
 
-
+break
 
   name= product['name']
 
