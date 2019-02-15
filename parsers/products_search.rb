@@ -41,10 +41,14 @@ end
 
 products.each_with_index do |product, i|
 
-break
+
 
   name= product['name']
 
+  brand = (product['name'].downcase.include?'red bull')? 'Red Bull':nil
+  if brand.nil?
+    brand =product['name'][/\s[A-Z\s]{4,}\s/]
+  end
   category = data['categories'][0]['name']
   availability = product['stock'] == true ? '1' : ''
   pack = product['totalQuantity'].to_i == 0 ? '1' : product['totalQuantity'].to_i
@@ -90,7 +94,7 @@ break
       # - - - - - - - - - - -
       SCRAPE_URL_NBR_PROD_PG1: nbr_products_pg1,
       # - - - - - - - - - - -
-      PRODUCT_BRAND: product['displayBrand'],
+      PRODUCT_BRAND: brand,
       PRODUCT_RANK: i + 1,
       PRODUCT_PAGE: current_page + 1,
       PRODUCT_ID: product['id'],
@@ -104,6 +108,7 @@ break
       IS_AVAILABLE: availability,
       PROMOTION_TEXT: "",
   }
+
   pages << {
       page_type: 'product_reviews',
       method: 'GET',
@@ -115,6 +120,6 @@ break
 
   }
 
-
 end
+
 
