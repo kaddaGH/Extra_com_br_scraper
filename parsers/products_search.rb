@@ -11,7 +11,7 @@ if data.key?('content')
 
 else
   scrape_url_nbr_products = data['result_meta']['total'].to_i
-  current_page = data['pages']['current']['name'].to_i-1
+  current_page = data['pages']['current']['name'].to_i-1 rescue 0
   page_size = data['result_meta']['this_page'].to_i
   number_of_pages = data['pages']['total'].to_i
   products = data['results']
@@ -48,33 +48,37 @@ else
   nbr_products_pg1 = page['vars']['nbr_products_pg1']
 end
 
+unless  products.nil?
 
-products.each_with_index do |product, i|
+  products.each_with_index do |product, i|
 
-if product.key?('id')
+    if product.key?('id')
 
-product_id = product['id']
-else
+      product_id = product['id']
+    else
 
-  product_id = product['url'][/\d+?\Z/]
+      product_id = product['url'][/\d+?\Z/]
+
+    end
+
+    pages << {
+        page_type: 'product_details',
+        method: 'GET',
+        url: "https://api.gpa.digital/ex/v3/products/ecom/#{product_id}?storeId=241&isClienteMais=false&searchkeyword=#{page['vars']['search_term']}&searchpage=#{page['vars']['page']}",
+        vars: {
+            'input_type' => page['vars']['input_type'],
+            'search_term' => page['vars']['search_term'],
+            'page' => page['vars']['page'],
+            'nbr_products_pg1' => nbr_products_pg1,
+            'scrape_url_nbr_products'=>scrape_url_nbr_products,
+            'rank' => i+1
+        }
+
+
+    }
+  end
 
 end
 
-  pages << {
-      page_type: 'product_details',
-      method: 'GET',
-      url: "https://api.gpa.digital/ex/v3/products/ecom/#{product_id}?storeId=241&isClienteMais=false&searchkeyword=#{page['vars']['search_term']}&searchpage=#{page['vars']['page']}",
-      vars: {
-          'input_type' => page['vars']['input_type'],
-          'search_term' => page['vars']['search_term'],
-          'page' => page['vars']['page'],
-          'nbr_products_pg1' => nbr_products_pg1,
-          'scrape_url_nbr_products'=>scrape_url_nbr_products,
-          'rank' => i+1
-      }
-
-
-  }
-end
 
 
