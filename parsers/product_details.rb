@@ -10,7 +10,7 @@ end
 
 availability = product['stock'] == true ? '1' : ''
 pack = product['totalQuantity'].to_i == 0 ? '1' : product['totalQuantity'].to_i
-promotion_text  =product['productPromotion']['promotionPercentOff']+"% OFF" rescue ''
+promotion_text  =product['productPromotion']['promotionPercentOff'].to_s+"% OFF" rescue ""
 
 regexps = [
     /(\d*[\.,]?\d+)\s?([Ff][Ll]\.?\s?[Oo][Zz])/,
