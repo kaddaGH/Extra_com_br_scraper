@@ -1,3 +1,4 @@
+require 'securerandom'
 data = JSON.parse(content)
 
 product = data['content']
@@ -5,7 +6,7 @@ name= product['name']
 
 brand = (product['name'].downcase.include?'red bull')? 'Red Bull':nil
 if brand.nil?
-  brand =product['name'][/\s[A-Z\s]{4,}\s/]
+  brand =product['name'][/\s[A-Z\s]{3,}\s/]
 end
 
 availability = product['stock'] == true ? '1' : ''
@@ -40,7 +41,7 @@ uom = $2
 
 product_details = {
     # - - - - - - - - - - -
-    RETAILER_ID: '100',
+    RETAILER_ID: '115',
     RETAILER_NAME: 'deliveryextra',
     GEOGRAPHY_NAME: 'BR',
     # - - - - - - - - - - -
@@ -69,7 +70,7 @@ product_details = {
 pages << {
     page_type: 'product_reviews',
     method: 'GET',
-    url: "https://api.gpa.digital/ex/products/#{product['id']}/review?&searchkeyword=#{page['vars']['search_term']}&searchpage=#{page['vars']['page']}",
+    url: "https://api.gpa.digital/ex/products/#{product['id']}/review?uid=#{SecureRandom.uuid}",
     vars: {
         'product_details' => product_details
     }
