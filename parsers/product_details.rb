@@ -4,13 +4,19 @@ data = JSON.parse(content)
 product = data['content']
 name= product['name']
 
+pack = name[/(\d+)(?=\s+Unidades)/].to_i rescue  nil
+
 brand = (product['name'].downcase.include?'red bull')? 'Red Bull':nil
 if brand.nil?
   brand =product['name'][/\s[A-Z\s]{3,}\s/]
 end
+desciption = product['shortDescription'].gsub(/<[^<>]+>/,' ').gsub(/[,\s\n]/,' ').strip rescue ""
 
 availability = product['stock'] == true ? '1' : ''
-pack = product['totalQuantity'].to_i == 0 ? '1' : product['totalQuantity'].to_i
+if pack.nil? or pack==0
+  pack = product['totalQuantity'].to_i == 0 ? '1' : product['totalQuantity'].to_i
+end
+
 promotion_text  =product['productPromotion']['promotionPercentOff'].to_s+"% OFF" rescue ""
 
 regexps = [
@@ -57,7 +63,7 @@ product_details = {
     PRODUCT_PAGE: page['vars']['page'],
     PRODUCT_ID: product['id'],
     PRODUCT_NAME: product['name'],
-    PRODUCT_DESCRIPTION: "",
+    PRODUCT_DESCRIPTION: desciption,
     PRODUCT_MAIN_IMAGE_URL: "https://www.deliveryextra.com.br"+product['thumbPath'].gsub(/50x50/,'200x200'),
     PRODUCT_ITEM_SIZE: item_size,
     PRODUCT_ITEM_SIZE_UOM: uom,
