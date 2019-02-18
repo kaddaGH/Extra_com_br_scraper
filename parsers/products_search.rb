@@ -67,7 +67,7 @@ unless  products.nil?
         vars: {
             'input_type' => page['vars']['input_type'],
             'search_term' => page['vars']['search_term'],
-            'page' => page['vars']['page'],
+            'page' => current_page+1,
             'nbr_products_pg1' => nbr_products_pg1,
             'scrape_url_nbr_products'=>scrape_url_nbr_products,
             'rank' => i+1
